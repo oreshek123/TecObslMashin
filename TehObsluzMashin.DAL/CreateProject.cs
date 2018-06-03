@@ -20,6 +20,7 @@ namespace TehObsluzMashin.DAL
     public class CreateProject
     {
         public List<Project> Projects;
+        public List<Admin> Admins;
         public CarCreate carCreate = new CarCreate();
         public CreateBreakDown CreateBreak = new CreateBreakDown();
         public List<BreakDown> Breaks;
@@ -27,6 +28,7 @@ namespace TehObsluzMashin.DAL
         public CreateUser CreateUser = new CreateUser();
         private XmlSerializer formatter = new XmlSerializer(typeof(List<Project>));
         private XmlSerializer formatterBreaks = new XmlSerializer(typeof(List<BreakDown>));
+        XmlSerializer xml = new XmlSerializer(typeof(List<Admin>));
         private Random Rnd = new Random();
 
 
@@ -57,6 +59,29 @@ namespace TehObsluzMashin.DAL
             using (FileStream fs = new FileStream(projectsFile.FullName, FileMode.OpenOrCreate))
             {
                 Projects = (List<Project>)formatter.Deserialize(fs);
+            }
+        }
+
+        public void LoasAdminsFromFile(FileInfo adminPath)
+        {
+            using (FileStream fs = new FileStream(adminPath.FullName, FileMode.Open))
+            {
+                Admins = (List<Admin>)xml.Deserialize(fs);
+            }
+        }
+        public void SerializeAdmins(FileInfo adminPath)
+        {
+            try
+            {
+                using (FileStream fs = new FileStream(adminPath.FullName, FileMode.OpenOrCreate))
+                {
+                    xml.Serialize(fs, Admins);
+                }
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
             }
         }
         public void SerializeProj(FileInfo projectsFile)

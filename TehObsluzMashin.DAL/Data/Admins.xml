@@ -12,4 +12,8 @@
     <Login>hopkins</Login>
     <Password>Admin</Password>
   </Admin>
+  <Admin>
+    <Login>Nastya</Login>
+    <Password>Admin</Password>
+  </Admin>
 </ArrayOfAdmin>

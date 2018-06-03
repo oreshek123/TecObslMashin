@@ -21,6 +21,7 @@ namespace TehObsluzMashin
     class Program
     {
         static DirectoryInfo path = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory).Parent?.Parent?.Parent;
+        static FileInfo adminPath = new FileInfo(path.FullName + "/TehObsluzMashin.DAL/Data/Admins.xml");
         static FileInfo projectPath = new FileInfo(path.FullName + "/TehObsluzMashin.DAL/Data/Projects.xml");
         static FileInfo breaksPath = new FileInfo(path.FullName + "/TehObsluzMashin.DAL/Data/BreakDowns.xml");
         static void Main(string[] args)
@@ -28,6 +29,7 @@ namespace TehObsluzMashin
             CreateProject createProject = new CreateProject();
             createProject.LoadFromFile(projectPath);
             createProject.LoadBreakDownsFromFile(breaksPath);
+            createProject.LoasAdminsFromFile(adminPath);
             start:
             Console.Clear();
             User user = null;
@@ -38,7 +40,7 @@ namespace TehObsluzMashin
             {
                 case 1:
                     {
-                        if (!LoginAdmin())
+                        if (!LoginAdmin(createProject))
                         {
                             Console.WriteLine("Good Bye");
                             Thread.Sleep(3000);
@@ -97,19 +99,10 @@ namespace TehObsluzMashin
                         string login = Console.ReadLine();
                         Console.WriteLine("Введите пароль");
                         string password = Console.ReadLine();
-                        Console.WriteLine("Введите название вашего проекта");
-                        string name = Console.ReadLine();
-                        proj = createProject.Projects.FirstOrDefault(f => f.Name == name);
 
-                        if(proj!=null)
-                        CreateUser.CUser(ref proj , login, password);
+                        createProject.Admins.Add(new Admin(login,password));
+                      
 
-                        else
-                        {
-                            Console.WriteLine("Проект не найден");
-                            Thread.Sleep(2000);
-                            goto start;
-                        }
                         break;
                         
                     }
@@ -117,12 +110,13 @@ namespace TehObsluzMashin
 
 
 
-            
+            createProject.SerializeProj(projectPath);
+            createProject.SerializeBreaks(breaksPath);
+            createProject.SerializeAdmins(adminPath);
             Console.WriteLine("Для выхода в главное меню нажмите букву \"M\"");
             if (Console.ReadKey().Key == ConsoleKey.M)
                 goto start;
-            createProject.SerializeProj(projectPath);
-            createProject.SerializeBreaks(breaksPath);
+           
             Console.ReadLine();
         }
 
@@ -809,15 +803,8 @@ namespace TehObsluzMashin
 
         }
 
-        public static bool LoginAdmin()
+        public static bool LoginAdmin(CreateProject createProject)
         {
-            FileInfo adminPath = new FileInfo(path.FullName + "/TehObsluzMashin.DAL/Data/Admins.xml");
-            List<Admin> admins = new List<Admin>();
-            XmlSerializer xml = new XmlSerializer(typeof(List<Admin>));
-            using (FileStream fs = new FileStream(adminPath.FullName, FileMode.Open))
-            {
-                admins = (List<Admin>)xml.Deserialize(fs);
-            }
 
             int countOfIncorrectChance = 3;
             AdminMenu:
@@ -826,21 +813,24 @@ namespace TehObsluzMashin
             Console.WriteLine("Введите пароль");
             string password = Console.ReadLine();
 
-            Admin findElement = admins.FirstOrDefault(w => w.Login == login && w.Password == password);
-            if (findElement != null)
+            if (createProject.Admins != null)
             {
-                Console.WriteLine("Добро пожаловать!");
-                Console.Clear();
-                return true;
-            }
-            else if (countOfIncorrectChance > 0)
-            {
-                Console.WriteLine("Ваши данные некорректны!");
-                countOfIncorrectChance--;
-                Console.WriteLine("Осталось попыток : " + countOfIncorrectChance);
-                Thread.Sleep(30);
-                Console.Clear();
-                goto AdminMenu;
+                Admin findElement = createProject.Admins.FirstOrDefault(w => w.Login == login && w.Password == password);
+                if (findElement != null)
+                {
+                    Console.WriteLine("Добро пожаловать!");
+                    Console.Clear();
+                    return true;
+                }
+                else if (countOfIncorrectChance > 0)
+                {
+                    Console.WriteLine("Ваши данные некорректны!");
+                    countOfIncorrectChance--;
+                    Console.WriteLine("Осталось попыток : " + countOfIncorrectChance);
+                    Thread.Sleep(30);
+                    Console.Clear();
+                    goto AdminMenu;
+                }
             }
 
             return false;
