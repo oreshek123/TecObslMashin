@@ -26,9 +26,10 @@ namespace TehObsluzMashin.DAL
         public CreateComponent CreateComponent = new CreateComponent();
         public CreateUser CreateUser = new CreateUser();
         private XmlSerializer formatter = new XmlSerializer(typeof(List<Project>));
-      
-
+        private XmlSerializer formatterBreaks = new XmlSerializer(typeof(List<BreakDown>));
         private Random Rnd = new Random();
+
+
         public void GenerateProjects()
         {
             Projects = new List<Project>();
@@ -50,21 +51,19 @@ namespace TehObsluzMashin.DAL
                 formatter.Serialize(fs, Projects);
             }
         }
-
-        public void LoadFromFile()
+        public void LoadFromFile(FileInfo projectsFile)
         {
 
-            using (FileStream fs = new FileStream("Projects.xml", FileMode.OpenOrCreate))
+            using (FileStream fs = new FileStream(projectsFile.FullName, FileMode.OpenOrCreate))
             {
                 Projects = (List<Project>)formatter.Deserialize(fs);
             }
         }
-
-        public void SerializeProj()
+        public void SerializeProj(FileInfo projectsFile)
         {
             try
             {
-                using (FileStream fs = new FileStream("Projects.xml", FileMode.OpenOrCreate))
+                using (FileStream fs = new FileStream(projectsFile.FullName, FileMode.OpenOrCreate))
                 {
                     formatter.Serialize(fs, Projects);
                 }
@@ -73,6 +72,31 @@ namespace TehObsluzMashin.DAL
             catch (Exception e)
             {
                 Console.WriteLine(e);
+            }
+        }
+        public void SerializeBreaks(FileInfo breaksPath)
+        {
+            try
+            {
+                using (FileStream fs = new FileStream(breaksPath.FullName, FileMode.OpenOrCreate))
+                {
+                    formatterBreaks.Serialize(fs, Breaks);
+                }
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        }
+        public void LoadBreakDownsFromFile(FileInfo breaksPath)
+        {
+            if (File.Exists(breaksPath.FullName))
+            {
+                using (FileStream fs = new FileStream(breaksPath.FullName, FileMode.OpenOrCreate))
+                {
+                    Breaks = (List<BreakDown>)formatterBreaks.Deserialize(fs);
+                }
             }
         }
         public void CreateProj()
@@ -97,7 +121,16 @@ namespace TehObsluzMashin.DAL
                 }
             }
         }
-
+        public void ShowAllCarsInProject(ref Project project)
+        {
+            if (project != null)
+            {
+                foreach (Car item in project.Cars)
+                {
+                    item.PrintInfo();
+                }
+            }
+        }
         public Project SearchProject(ref List<Project> projects, string name)
         {
             Project project = new Project();
@@ -153,7 +186,7 @@ namespace TehObsluzMashin.DAL
 
             return result;
         }
-        public void CreateBreaks(ref Car car, out string message, ref Project project)
+        public void CreateBreaks(ref Car car, ref Project project)
         {
             Console.WriteLine("Введите описание поломки");
             string description = Console.ReadLine();
@@ -163,7 +196,6 @@ namespace TehObsluzMashin.DAL
             Console.WriteLine("Введите логин пользователя, который проводил осмотр ");
             string login = Console.ReadLine();
             User user = new User();
-            string mes = "";
             if (project.Users != null)
             {
                 bool isUser = false;
@@ -186,22 +218,45 @@ namespace TehObsluzMashin.DAL
             {
 
                 BreakDown brekd = new BreakDown();
-                brekd = CreateBreak.Create(ref car, description, recommends, ref user);
+                brekd = CreateBreak.Create(ref car, description, recommends, ref user, ref project);
                 car.Active = false;
                 Breaks.Add(brekd);
-                mes = $"Машина остановлена";
+                Console.WriteLine("Машина остановлена");
             }
             else
             {
                 Breaks = new List<BreakDown>();
                 BreakDown brekd = new BreakDown();
-                brekd = CreateBreak.Create(ref car, description, recommends, ref user);
+                brekd = CreateBreak.Create(ref car, description, recommends, ref user, ref project);
                 car.Active = false;
                 Breaks.Add(brekd);
-                mes = $"Машина остановлена";
+                Console.WriteLine("Машина остановлена");
             }
+        }
+        public void CreateBreaks(ref Car car, ref Project project, ref User user)
+        {
+            Console.WriteLine("Введите описание поломки");
+            string description = Console.ReadLine();
+            Console.WriteLine("Введите рекомендации по починке");
+            string recommends = Console.ReadLine();
 
-            message = mes;
+            if (Breaks != null)
+            {
+                BreakDown brekd = new BreakDown();
+                brekd = CreateBreak.Create(ref car, description, recommends, ref user, ref project);
+                car.Active = false;
+                Breaks.Add(brekd);
+                Console.WriteLine("Машина остановлена");
+            }
+            else
+            {
+                Breaks = new List<BreakDown>();
+                BreakDown brekd = new BreakDown();
+                brekd = CreateBreak.Create(ref car, description, recommends, ref user, ref project);
+                car.Active = false;
+                Breaks.Add(brekd);
+                Console.WriteLine("Машина остановлена");
+            }
         }
         public void ShowAllBreaks()
         {
@@ -212,6 +267,18 @@ namespace TehObsluzMashin.DAL
                     breakDown.PrintBreakDown();
                 }
             }
+        }
+        public void ShowAllBreaks(ref Project project)
+        {
+            if (Breaks != null)
+            {
+                foreach (BreakDown item in Breaks)
+                {
+                    if (item.Project.Name == project.Name)
+                        item.PrintBreakDown();
+                }
+            }
+            else Console.WriteLine("Список пуст");
         }
     }
 

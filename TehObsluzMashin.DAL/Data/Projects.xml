@@ -7,9 +7,9 @@
         <Model>keene</Model>
         <YearOfIssue>1978</YearOfIssue>
         <Name>doris</Name>
-        <Type>Auto</Type>
+        <TypeOfCar>Mehanic</TypeOfCar>
         <GarageNuber>V186YPA</GarageNuber>
-        <Active>true</Active>
+        <Active>false</Active>
         <Components>
           <Part>
             <Name>barron</Name>
@@ -53,7 +53,7 @@
         <Model>simon</Model>
         <YearOfIssue>1994</YearOfIssue>
         <Name>willis</Name>
-        <Type>Auto</Type>
+        <TypeOfCar>Mehanic</TypeOfCar>
         <GarageNuber>W258YDL</GarageNuber>
         <Active>true</Active>
         <Components>
@@ -79,9 +79,9 @@
         <Model>stout</Model>
         <YearOfIssue>1984</YearOfIssue>
         <Name>leroy</Name>
-        <Type>Mehanic</Type>
+        <TypeOfCar>Mehanic</TypeOfCar>
         <GarageNuber>N562DXJ</GarageNuber>
-        <Active>true</Active>
+        <Active>false</Active>
         <Components>
           <Part>
             <Name>barron</Name>
@@ -113,7 +113,7 @@
         <Model>madison</Model>
         <YearOfIssue>1969</YearOfIssue>
         <Name>jeannette</Name>
-        <Type>Mehanic</Type>
+        <TypeOfCar>Mehanic</TypeOfCar>
         <GarageNuber>U434MOF</GarageNuber>
         <Active>true</Active>
         <Components>
@@ -139,6 +139,24 @@
           </Part>
         </Components>
       </Car>
+      <Car>
+        <Model>Carolla</Model>
+        <YearOfIssue>2016</YearOfIssue>
+        <Name>Toyota</Name>
+        <TypeOfCar>Auto</TypeOfCar>
+        <GarageNuber>A056ILO</GarageNuber>
+        <Active>true</Active>
+        <Components>
+          <Part>
+            <Name>Фары</Name>
+            <ComponentId>1531516</ComponentId>
+          </Part>
+          <Part>
+            <Name>Колесо</Name>
+            <ComponentId>564165165</ComponentId>
+          </Part>
+        </Components>
+      </Car>
     </Cars>
     <Users>
       <User>
@@ -147,6 +165,10 @@
       </User>
       <User>
         <Login>rossi</Login>
+        <Password>123</Password>
+      </User>
+      <User>
+        <Login>Nastya</Login>
         <Password>123</Password>
       </User>
     </Users>
@@ -158,7 +180,7 @@
         <Model>velasquez</Model>
         <YearOfIssue>1984</YearOfIssue>
         <Name>santiago</Name>
-        <Type>Mehanic</Type>
+        <TypeOfCar>Mehanic</TypeOfCar>
         <GarageNuber>F713VGV</GarageNuber>
         <Active>true</Active>
         <Components>
@@ -203,7 +225,7 @@
         <Model>darby</Model>
         <YearOfIssue>1968</YearOfIssue>
         <Name>hiram</Name>
-        <Type>Mehanic</Type>
+        <TypeOfCar>Mehanic</TypeOfCar>
         <GarageNuber>I964DGJ</GarageNuber>
         <Active>true</Active>
         <Components>
@@ -229,7 +251,7 @@
         <Model>soto</Model>
         <YearOfIssue>1964</YearOfIssue>
         <Name>camilla</Name>
-        <Type>Mehanic</Type>
+        <TypeOfCar>Mehanic</TypeOfCar>
         <GarageNuber>A456WDZ</GarageNuber>
         <Active>true</Active>
         <Components>
@@ -255,7 +277,7 @@
         <Model>richmond</Model>
         <YearOfIssue>1970</YearOfIssue>
         <Name>joesph</Name>
-        <Type>Mehanic</Type>
+        <TypeOfCar>Mehanic</TypeOfCar>
         <GarageNuber>K595NXL</GarageNuber>
         <Active>true</Active>
         <Components>
@@ -293,7 +315,7 @@
         <Model>bowles</Model>
         <YearOfIssue>1964</YearOfIssue>
         <Name>loretta</Name>
-        <Type>Mehanic</Type>
+        <TypeOfCar>Mehanic</TypeOfCar>
         <GarageNuber>T059SNW</GarageNuber>
         <Active>true</Active>
         <Components>
@@ -323,7 +345,7 @@
         <Model>cooley</Model>
         <YearOfIssue>1990</YearOfIssue>
         <Name>wesley</Name>
-        <Type>Auto</Type>
+        <TypeOfCar>Mehanic</TypeOfCar>
         <GarageNuber>I183QYA</GarageNuber>
         <Active>true</Active>
         <Components>
@@ -388,7 +410,7 @@
         <Model>delgado</Model>
         <YearOfIssue>1957</YearOfIssue>
         <Name>tim</Name>
-        <Type>Auto</Type>
+        <TypeOfCar>Mehanic</TypeOfCar>
         <GarageNuber>P056TMR</GarageNuber>
         <Active>true</Active>
         <Components>
@@ -438,7 +460,7 @@
         <Model>olivares</Model>
         <YearOfIssue>1996</YearOfIssue>
         <Name>millie</Name>
-        <Type>Mehanic</Type>
+        <TypeOfCar>Mehanic</TypeOfCar>
         <GarageNuber>T419KLR</GarageNuber>
         <Active>true</Active>
         <Components>
@@ -484,7 +506,7 @@
         <Model>gagnon</Model>
         <YearOfIssue>2007</YearOfIssue>
         <Name>raul</Name>
-        <Type>Mehanic</Type>
+        <TypeOfCar>Mehanic</TypeOfCar>
         <GarageNuber>F762HNI</GarageNuber>
         <Active>true</Active>
         <Components>
@@ -514,7 +536,7 @@
         <Model>chacon</Model>
         <YearOfIssue>1955</YearOfIssue>
         <Name>saul</Name>
-        <Type>Mehanic</Type>
+        <TypeOfCar>Mehanic</TypeOfCar>
         <GarageNuber>Q981WCL</GarageNuber>
         <Active>true</Active>
         <Components>
@@ -555,7 +577,7 @@
         <Model>mcdonough</Model>
         <YearOfIssue>2004</YearOfIssue>
         <Name>willard</Name>
-        <Type>Mehanic</Type>
+        <TypeOfCar>Mehanic</TypeOfCar>
         <GarageNuber>E859PTI</GarageNuber>
         <Active>true</Active>
         <Components>
@@ -597,7 +619,7 @@
         <Model>kelly</Model>
         <YearOfIssue>2002</YearOfIssue>
         <Name>camille</Name>
-        <Type>Auto</Type>
+        <TypeOfCar>Mehanic</TypeOfCar>
         <GarageNuber>W705FEV</GarageNuber>
         <Active>true</Active>
         <Components>
@@ -619,7 +641,7 @@
         <Model>navarro</Model>
         <YearOfIssue>1976</YearOfIssue>
         <Name>luz</Name>
-        <Type>Auto</Type>
+        <TypeOfCar>Mehanic</TypeOfCar>
         <GarageNuber>V112OOD</GarageNuber>
         <Active>true</Active>
         <Components>
@@ -664,5 +686,6 @@
   <Project>
     <Name>EGhejdfsa</Name>
     <Cars />
+    <Users />
   </Project>
 </ArrayOfProject>

@@ -6,7 +6,7 @@ namespace ModuleBreakDown
     [Serializable]
     public class CreateBreakDown
     {
-        public BreakDown Create(ref Car car, string description, string recommends,ref User user)
+        public BreakDown Create(ref Car car, string description, string recommends,ref User user, ref Project project)
         {
             BreakDown breakDown = new BreakDown()
             {
@@ -14,7 +14,8 @@ namespace ModuleBreakDown
                 DateOfIssue = DateTime.Now,
                 DescriptionOfBreakDown = description,
                 RecommendationsForRepeiring = recommends,
-                User = user
+                User = user,
+                Project = project
             };
 
             return breakDown;

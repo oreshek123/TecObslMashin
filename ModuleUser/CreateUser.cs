@@ -13,12 +13,6 @@ namespace ModuleUser
         public Random Rnd = new Random();
         public List<User> GenerateUsers()
         {
-            XmlSerializer formatter = new XmlSerializer(typeof(List<Project>));
-            List<Project> projects;
-            //using (FileStream fs = new FileStream("Projects.xml", FileMode.Open))
-            //{
-            //    projects = (List<Project>)formatter.Deserialize(fs);
-            //}
             List<User> users = new List<User>();
             for (int i = 0; i < Rnd.Next(1, 10); i++)
             {
@@ -61,7 +55,6 @@ namespace ModuleUser
             {
                 User user = new User
                 {
-                    Project = project,
                     Login = login,
                     Password = password
                 };
@@ -72,7 +65,6 @@ namespace ModuleUser
                 project.Users = new List<User>();
                 User user = new User
                 {
-                    Project = project,
                     Login = login,
                     Password = password
                 };
