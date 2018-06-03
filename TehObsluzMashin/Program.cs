@@ -1,13 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
+using ModuleCar;
+using ModuleComponent;
+using ModuleUser;
 using TehObsluzMashin.DAL;
-using TehObsluzMashin.DAL.Classes;
-using TehObsluzMashin.DAL.Modules;
+using Test.Classes;
+
 
 namespace TehObsluzMashin
 {
@@ -15,13 +20,15 @@ namespace TehObsluzMashin
     {
         static void Main(string[] args)
         {
-            
+            Console.WriteLine("");
+
             CreateProject createProject = new CreateProject();
-            createProject.GenerateProjects();
+            createProject.LoadFromFile();
+
             start:
             Console.Clear();
             Console.WriteLine("------------------------Контроль технического обслуживания машин-------------------------");
-            Console.WriteLine("1 - Машина\n2 - Компонент\n3 - Проект\n4 - Пользователь\n5 - Останов");
+            Console.WriteLine("1 - Машина\n2 - Компонент\n3 - Проект\n4 - Останов\n5 - Пользователь");
             int cho = 0;
             int.TryParse(Console.ReadLine(), out cho);
             switch (cho)
@@ -61,12 +68,12 @@ namespace TehObsluzMashin
                                 }
                             case 3:
                                 {
-                                    Car car = SearchCar(ref createProject,out Project project);
+                                    Car car = SearchCar(ref createProject, out Project project);
                                     if (createProject.IsBroken(ref car))
                                         Console.WriteLine("Машина уже не в рабочем состоянии");
                                     else
                                     {
-                                        createProject.CreateBreaks(ref car, out string message,ref project);
+                                        createProject.CreateBreaks(ref car, out string message, ref project);
                                         Console.WriteLine(message);
                                     }
 
@@ -244,7 +251,7 @@ namespace TehObsluzMashin
                             goto start;
                         break;
                     }
-                case 4:
+                case 5:
                     {
                         Console.Clear();
                         Console.WriteLine("------------------------Контроль технического обслуживания машин-------------------------");
@@ -304,7 +311,7 @@ namespace TehObsluzMashin
                             goto start;
                         break;
                     }
-                case 5:
+                case 4:
                     {
                         Console.Clear();
                         Console.WriteLine("------------------------Контроль технического обслуживания машин-------------------------");
@@ -352,7 +359,7 @@ namespace TehObsluzMashin
             }
 
 
-
+            createProject.SerializeProj();
             Console.ReadLine();
         }
 

@@ -1,21 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace TehObsluzMashin.DAL.Classes
+
+namespace Test.Classes
 {
-    public enum Type
+    public enum TypeOfCar
     {
         Mehanic, Auto
     }
+    [Serializable]
     public class Car
     {
         public string Model { get; set; }
         public int YearOfIssue { get; set; }
         public string Name { get; set; }
-        public Type Type { get; set; }
+        public TypeOfCar TypeOfCar { get; set; }
         public string GarageNuber { get; set; }
         public bool Active { get; set; } = true;
 
@@ -37,15 +36,15 @@ namespace TehObsluzMashin.DAL.Classes
                 Console.WriteLine($"Модель : {Model}\t" +
                                   $"Год выпуска : {YearOfIssue}\t" +
                                   $"Наименование : {Name}\t" +
-                                  $"Тип : {Type}\t" +
+                                  $"Тип : {TypeOfCar}\t" +
                                   $"Гаражный номер : {GarageNuber}\n");
                 Console.ForegroundColor = ConsoleColor.White;
-                if(Components!=null)
+                if (Components != null)
                 {
                     foreach (Part component in Components)
-                {
-                    component.PrintComponents();
-                }
+                    {
+                        component.PrintComponents();
+                    }
                 }
             }
             else
@@ -54,17 +53,17 @@ namespace TehObsluzMashin.DAL.Classes
                 Console.WriteLine($"Модель : {Model}\t" +
                                   $"Год выпуска : {YearOfIssue}\t" +
                                   $"Наименование : {Name}\t" +
-                                  $"Тип : {Type}\t" +
+                                  $"Тип : {TypeOfCar}\t" +
                                   $"Гаражный номер : {GarageNuber}\n");
                 Console.ForegroundColor = ConsoleColor.White;
-                if(Components!=null)
+                if (Components != null)
                 {
                     foreach (Part component in Components)
-                {
-                    component.PrintComponents();
-                }
+                    {
+                        component.PrintComponents();
+                    }
                 }
             }
-        } 
+        }
     }
 }

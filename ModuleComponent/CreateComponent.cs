@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
-using TehObsluzMashin.DAL.Classes;
 using RandomNameGenerator;
+using Test.Classes;
 
-namespace TehObsluzMashin.DAL.Modules
+namespace ModuleComponent
 {
     public class CreateComponent
     {

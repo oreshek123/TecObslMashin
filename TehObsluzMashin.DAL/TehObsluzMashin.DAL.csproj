@@ -43,18 +43,30 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Classes\Car.cs" />
-    <Compile Include="Classes\Part.cs" />
-    <Compile Include="Classes\Project.cs" />
-    <Compile Include="Classes\BreakDown.cs" />
-    <Compile Include="Classes\User.cs" />
-    <Compile Include="Modules\CarCreate.cs" />
-    <Compile Include="Modules\CreateBreakDown.cs" />
-    <Compile Include="Modules\CreateComponent.cs" />
-    <Compile Include="Modules\CreateProject.cs" />
-    <Compile Include="Modules\CreateUser.cs" />
+    <Compile Include="CreateProject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\ModuleBreakDown\ModuleBreakDown.csproj">
+      <Project>{9B4D6272-AFEB-4B61-A91C-B45F33A135C0}</Project>
+      <Name>ModuleBreakDown</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ModuleCar\ModuleCar.csproj">
+      <Project>{72314273-2E70-42FB-A8E8-EF9E2178FB68}</Project>
+      <Name>ModuleCar</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ModuleComponent\ModuleComponent.csproj">
+      <Project>{2C47E175-701D-4042-9F27-67F227960109}</Project>
+      <Name>ModuleComponent</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ModuleUser\ModuleUser.csproj">
+      <Project>{5BBBEC17-1BF2-4692-9313-42FCD39A39C0}</Project>
+      <Name>ModuleUser</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Test\Test.csproj">
+      <Project>{3A98B747-A111-4839-9A22-5AEBEF824B87}</Project>
+      <Name>Test</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TehObsluzMashin.DAL.Classes;
-namespace TehObsluzMashin.DAL.Modules
+using Test.Classes;
+
+namespace ModuleBreakDown
 {
+    [Serializable]
     public class CreateBreakDown
     {
         public BreakDown Create(ref Car car, string description, string recommends,ref User user)

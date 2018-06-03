@@ -4,16 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{9BDA4605-9FB7-4B09-BF60-3D5F7F36C96E}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <RootNamespace>TehObsluzMashin</RootNamespace>
-    <AssemblyName>TehObsluzMashin</AssemblyName>
+    <ProjectGuid>{72314273-2E70-42FB-A8E8-EF9E2178FB68}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ModuleCar</RootNamespace>
+    <AssemblyName>ModuleCar</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -23,7 +22,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -32,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="RandomNameGenerator">
+      <HintPath>..\..\..\..\Desktop\RandomNameGenerator.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -42,28 +43,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="CarCreate.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ModuleCar\ModuleCar.csproj">
-      <Project>{72314273-2E70-42FB-A8E8-EF9E2178FB68}</Project>
-      <Name>ModuleCar</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ModuleComponent\ModuleComponent.csproj">
       <Project>{2C47E175-701D-4042-9F27-67F227960109}</Project>
       <Name>ModuleComponent</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ModuleUser\ModuleUser.csproj">
-      <Project>{5BBBEC17-1BF2-4692-9313-42FCD39A39C0}</Project>
-      <Name>ModuleUser</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TehObsluzMashin.DAL\TehObsluzMashin.DAL.csproj">
-      <Project>{E02A5157-9756-493A-81FD-E1591C96A46C}</Project>
-      <Name>TehObsluzMashin.DAL</Name>
     </ProjectReference>
     <ProjectReference Include="..\Test\Test.csproj">
       <Project>{3A98B747-A111-4839-9A22-5AEBEF824B87}</Project>

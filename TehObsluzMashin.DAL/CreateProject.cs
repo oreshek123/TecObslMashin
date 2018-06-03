@@ -1,14 +1,22 @@
 ﻿using System;
+using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
+using ModuleBreakDown;
+using ModuleCar;
+using ModuleComponent;
+using ModuleUser;
 using RandomNameGenerator;
-using TehObsluzMashin.DAL.Classes;
+using Test.Classes;
 
-namespace TehObsluzMashin.DAL.Modules
+
+namespace TehObsluzMashin.DAL
 {
+    [Serializable]
     public class CreateProject
     {
         public List<Project> Projects;
@@ -17,33 +25,61 @@ namespace TehObsluzMashin.DAL.Modules
         public List<BreakDown> Breaks;
         public CreateComponent CreateComponent = new CreateComponent();
         public CreateUser CreateUser = new CreateUser();
-        public CreateProject()
-        {
-            //GenerateProjects();
-        }
+        private XmlSerializer formatter = new XmlSerializer(typeof(List<Project>));
+      
 
         private Random Rnd = new Random();
         public void GenerateProjects()
         {
             Projects = new List<Project>();
-            
-            for (int i = 0; i < Rnd.Next(1,10); i++)
+
+            for (int i = 0; i < Rnd.Next(1, 10); i++)
             {
                 Project project = new Project()
                 {
                     Cars = carCreate.CreateCar(),
-                    Name = NameGenerator.GenerateFirstName((Gender) Rnd.Next(0, 2)).ToLower(),
+                    Name = NameGenerator.GenerateFirstName((Gender)Rnd.Next(0, 2)).ToLower(),
                     Users = CreateUser.GenerateUsers()
                 };
                 Projects.Add(project);
             }
+
+            XmlSerializer formatter = new XmlSerializer(typeof(List<Project>));
+            using (FileStream fs = new FileStream("Projects.xml", FileMode.OpenOrCreate))
+            {
+                formatter.Serialize(fs, Projects);
+            }
         }
 
+        public void LoadFromFile()
+        {
+
+            using (FileStream fs = new FileStream("Projects.xml", FileMode.OpenOrCreate))
+            {
+                Projects = (List<Project>)formatter.Deserialize(fs);
+            }
+        }
+
+        public void SerializeProj()
+        {
+            try
+            {
+                using (FileStream fs = new FileStream("Projects.xml", FileMode.OpenOrCreate))
+                {
+                    formatter.Serialize(fs, Projects);
+                }
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        }
         public void CreateProj()
         {
             Console.WriteLine("Введите имя проекта");
             string name = Console.ReadLine();
-            
+
             Project project = new Project()
             {
                 Name = name,
@@ -62,7 +98,7 @@ namespace TehObsluzMashin.DAL.Modules
             }
         }
 
-        public Project SearchProject(ref List<Project >projects, string name)
+        public Project SearchProject(ref List<Project> projects, string name)
         {
             Project project = new Project();
             if (projects != null)
@@ -94,13 +130,12 @@ namespace TehObsluzMashin.DAL.Modules
                     }
                 }
             }
-            if(IsTrue==false)
-            autoCar = null;
+            if (IsTrue == false)
+                autoCar = null;
 
             message = $"Найдено {i} машин";
             return autoCar;
         }
-
         public bool IsBroken(ref Car car)
         {
             bool result = false;
@@ -118,7 +153,7 @@ namespace TehObsluzMashin.DAL.Modules
 
             return result;
         }
-        public void CreateBreaks(ref Car car, out string message,ref Project project)
+        public void CreateBreaks(ref Car car, out string message, ref Project project)
         {
             Console.WriteLine("Введите описание поломки");
             string description = Console.ReadLine();
@@ -151,16 +186,16 @@ namespace TehObsluzMashin.DAL.Modules
             {
 
                 BreakDown brekd = new BreakDown();
-                        brekd = CreateBreak.Create(ref car, description, recommends,ref user);
-                        car.Active = false;
-                        Breaks.Add(brekd);
-                        mes = $"Машина остановлена";
+                brekd = CreateBreak.Create(ref car, description, recommends, ref user);
+                car.Active = false;
+                Breaks.Add(brekd);
+                mes = $"Машина остановлена";
             }
             else
             {
                 Breaks = new List<BreakDown>();
                 BreakDown brekd = new BreakDown();
-                brekd = CreateBreak.Create(ref car, description, recommends,ref user);
+                brekd = CreateBreak.Create(ref car, description, recommends, ref user);
                 car.Active = false;
                 Breaks.Add(brekd);
                 mes = $"Машина остановлена";

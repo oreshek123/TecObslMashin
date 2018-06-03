@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace TehObsluzMashin.DAL.Classes
+namespace Test.Classes
 {
+    [Serializable]
     public class BreakDown
     {
         public DateTime DateOfIssue { get; set; }

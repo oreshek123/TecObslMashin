@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace TehObsluzMashin.DAL.Classes
+namespace Test.Classes
 {
+    [Serializable]
     public class Project
     {
         public string Name { get; set; }
@@ -21,6 +19,7 @@ namespace TehObsluzMashin.DAL.Classes
             {
                 car.PrintInfo();
             }
+
         }
     }
 }

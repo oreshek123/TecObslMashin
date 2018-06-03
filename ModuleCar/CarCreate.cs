@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using RandomNameGenerator;
-using TehObsluzMashin.DAL.Classes;
-using Type = TehObsluzMashin.DAL.Classes.Type;
 
-namespace TehObsluzMashin.DAL.Modules
+using Test.Classes;
+using ModuleComponent;
+
+namespace ModuleCar
 {
     public class CarCreate
     {
@@ -34,7 +32,7 @@ namespace TehObsluzMashin.DAL.Modules
                                   $"{_pwdChars[Rnd.Next(0, _pwdChars.Length)]}",
                     Model = NameGenerator.GenerateLastName().ToLower(),
                     Name = NameGenerator.GenerateFirstName((Gender)Rnd.Next(0, 2)).ToLower(),
-                    Type = (Type)Rnd.Next(0, 2),
+                    TypeOfCar = (TypeOfCar)Rnd.Next(0, 2),
                     YearOfIssue = Rnd.Next(1950, 2019)
                 };
                 Cars.Add(car);
@@ -52,7 +50,7 @@ namespace TehObsluzMashin.DAL.Modules
             string garageNumber = Console.ReadLine().ToUpper();
             Console.WriteLine("Введите тип машины 0 - механика 1 - автомат");
             int.TryParse(Console.ReadLine(), out int type);
-            Type t = (Type)type;
+            TypeOfCar t = (TypeOfCar)type;
             Console.WriteLine("Введите год выпуска машины");
             int.TryParse(Console.ReadLine(), out int yearOfIssue);
             if (project.Cars != null)
@@ -63,7 +61,7 @@ namespace TehObsluzMashin.DAL.Modules
                     GarageNuber = garageNumber,
                     Model = model,
                     YearOfIssue = yearOfIssue,
-                    Type = t,
+                    TypeOfCar = t,
                 };
                 project.Cars.Add(car);
             }
