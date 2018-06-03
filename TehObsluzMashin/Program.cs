@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -18,9 +19,34 @@ namespace TehObsluzMashin
 {
     class Program
     {
+        static DirectoryInfo path = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory).Parent?.Parent?.Parent;
         static void Main(string[] args)
         {
-            Console.WriteLine("");
+
+            FileInfo adminPath = new FileInfo(path.FullName + "/TehObsluzMashin.DAL/Data/Admins.xml");
+            Console.WriteLine("1 - Администратор\n2 - Пользователь");
+            int.TryParse(Console.ReadLine(), out int IsAdmin);
+            switch (IsAdmin)
+            {
+                case 1:
+                    {
+                        List<Admin> admins = new List<Admin>();
+                        XmlSerializer xml = new XmlSerializer(typeof(List<Admin>));
+                        using (FileStream fs = new FileStream(adminPath.FullName, FileMode.Open))
+                        {
+                            admins = (List<Admin>)xml.Deserialize(fs);
+                        }
+
+                        Console.WriteLine("Введите логин");
+                        string login = Console.ReadLine();
+                        foreach (Admin item in admins)
+                        {
+                            
+                        }
+
+                        break;
+                    }
+            }
 
             CreateProject createProject = new CreateProject();
             createProject.LoadFromFile();

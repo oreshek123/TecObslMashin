@@ -68,5 +68,11 @@
       <Name>Test</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Data\Admins.xml" />
+    <Content Include="Data\Projects.xml" />
+    <Content Include="Data\Users.xml" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
