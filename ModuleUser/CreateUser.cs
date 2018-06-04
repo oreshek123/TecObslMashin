@@ -53,12 +53,25 @@ namespace ModuleUser
         {
             if (project.Users != null)
             {
-                User user = new User
+                bool isUser = false;
+                foreach (User item in project.Users)
                 {
-                    Login = login,
-                    Password = password
-                };
-                project.Users.Add(user);
+                    if (item.Login == login)
+                        isUser = true;
+                }
+
+                if (!isUser)
+                {
+                    User user = new User
+                    {
+                        Login = login,
+                        Password = password
+                    };
+                    project.Users.Add(user);
+                    Console.WriteLine("Пользователь успешно создан");
+                }
+                else Console.WriteLine("Пользователь уже существует на этом проекте");
+
             }
             else
             {
@@ -69,7 +82,7 @@ namespace ModuleUser
                     Password = password
                 };
                 project.Users.Add(user);
-              
+
             }
         }
     }

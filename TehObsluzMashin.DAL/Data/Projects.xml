@@ -175,6 +175,10 @@
         <Login>Egor</Login>
         <Password>123</Password>
       </User>
+      <User>
+        <Login>Anastasia</Login>
+        <Password>123</Password>
+      </User>
     </Users>
   </Project>
   <Project>

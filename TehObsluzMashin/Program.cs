@@ -26,19 +26,21 @@ namespace TehObsluzMashin
         static FileInfo breaksPath = new FileInfo(path.FullName + "/TehObsluzMashin.DAL/Data/BreakDowns.xml");
         static void Main(string[] args)
         {
-            CreateProject createProject = new CreateProject();
-            createProject.LoadFromFile(projectPath);
-            createProject.LoadBreakDownsFromFile(breaksPath);
-            createProject.LoasAdminsFromFile(adminPath);
-            start:
-            Console.Clear();
-            User user = null;
-            Project proj = null;
-            Console.WriteLine("1 - Администратор\n2 - Пользователь\n3 - Зарегистрироваться");
-            int.TryParse(Console.ReadLine(), out int IsAdmin);
-            switch (IsAdmin)
+            try
             {
-                case 1:
+                CreateProject createProject = new CreateProject();
+                createProject.LoadFromFile(projectPath);
+                createProject.LoadBreakDownsFromFile(breaksPath);
+                createProject.LoasAdminsFromFile(adminPath);
+                start:
+                Console.Clear();
+                User user = null;
+                Project proj = null;
+                Console.WriteLine("1 - Администратор\n2 - Пользователь\n3 - Зарегистрироваться");
+                int.TryParse(Console.ReadLine(), out int IsAdmin);
+                switch (IsAdmin)
+                {
+                    case 1:
                     {
                         if (!LoginAdmin(createProject))
                         {
@@ -50,14 +52,14 @@ namespace TehObsluzMashin
                         AdminMenu(createProject);
                         break;
                     }
-                case 2:
+                    case 2:
                     {
-                        UserMenu:
+                        int countOfIncorrectChance = 3;
+                            UserMenu:
                         Console.WriteLine("Введите логин");
                         string login = Console.ReadLine();
                         Console.WriteLine("Введите пароль");
                         string password = Console.ReadLine();
-                        int countOfIncorrectChance = 3;
                         foreach (Project item in createProject.Projects)
                         {
                             foreach (User itemUser in item.Users)
@@ -75,16 +77,17 @@ namespace TehObsluzMashin
                         if (user != null)
                         {
                             Console.WriteLine("Добро пожаловать");
+                            Thread.Sleep(3000);
                             Console.Clear();
                             UserMenu(proj, user, createProject);
 
                         }
-                        else if (countOfIncorrectChance > 0)
+                        else if (countOfIncorrectChance > 1)
                         {
                             Console.WriteLine("Ваши данные некорректны!");
                             countOfIncorrectChance--;
                             Console.WriteLine("Осталось попыток : " + countOfIncorrectChance);
-                            Thread.Sleep(30);
+                            Thread.Sleep(2000);
                             Console.Clear();
                             goto UserMenu;
                         }
@@ -93,30 +96,35 @@ namespace TehObsluzMashin
 
                         break;
                     }
-                case 3:
+                    case 3:
                     {
                         Console.WriteLine("Введите логин");
                         string login = Console.ReadLine();
                         Console.WriteLine("Введите пароль");
                         string password = Console.ReadLine();
 
-                        createProject.Admins.Add(new Admin(login,password));
-                      
+                        createProject.Admins.Add(new Admin(login, password));
+
 
                         break;
-                        
+
                     }
+                }
+
+
+
+                createProject.SerializeProj(projectPath);
+                createProject.SerializeBreaks(breaksPath);
+                createProject.SerializeAdmins(adminPath);
+                Console.WriteLine("Для выхода в главное меню нажмите букву \"M\"");
+                if (Console.ReadKey().Key == ConsoleKey.M)
+                    goto start;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
             }
 
-
-
-            createProject.SerializeProj(projectPath);
-            createProject.SerializeBreaks(breaksPath);
-            createProject.SerializeAdmins(adminPath);
-            Console.WriteLine("Для выхода в главное меню нажмите букву \"M\"");
-            if (Console.ReadKey().Key == ConsoleKey.M)
-                goto start;
-           
             Console.ReadLine();
         }
 
@@ -164,12 +172,16 @@ namespace TehObsluzMashin
                             case 3:
                                 {
                                     Car car = SearchCarForStop(ref proj);
-                                    if (createProject.IsBroken(ref car))
-                                        Console.WriteLine("Машина уже не в рабочем состоянии");
-                                    else
+                                    if (car != null)
                                     {
-                                        createProject.CreateBreaks(ref car, ref proj);
+                                        if (createProject.IsBroken(ref car))
+                                            Console.WriteLine("Машина уже не в рабочем состоянии");
+                                        else
+                                        {
+                                            createProject.CreateBreaks(ref car, ref proj, ref user);
+                                        }
                                     }
+                                    else Console.WriteLine("Проверьте корректность ввода");
 
                                     Console.WriteLine("Вернуться в меню - enter");
                                     if (Console.ReadKey().Key == ConsoleKey.Enter)
@@ -181,29 +193,31 @@ namespace TehObsluzMashin
                             case 4:
                                 {
                                     Car car = SearchCar(ref proj);
-
-                                    if (CarCreate.IsComponentInThatCar(ref car, out int id))
+                                    if (car != null)
                                     {
-                                        Console.WriteLine("Компонент уже есть в данной машине");
-                                        Console.WriteLine("Создать новый компонент 1 - да Любая клавиша - выход в меню");
-                                        int.TryParse(Console.ReadLine(), out int ch);
-                                        if (ch == 1)
+                                        if (CarCreate.IsComponentInThatCar(ref car, out int id))
                                         {
-                                            Console.WriteLine("Введите id компонента");
-                                            int.TryParse(Console.ReadLine(), out id);
+                                            Console.WriteLine("Компонент уже есть в данной машине");
+                                            Console.WriteLine("Создать новый компонент 1 - да Любая клавиша - выход в меню");
+                                            int.TryParse(Console.ReadLine(), out int ch);
+                                            if (ch == 1)
+                                            {
+                                                Console.WriteLine("Введите id компонента");
+                                                int.TryParse(Console.ReadLine(), out id);
+                                                Part component = CreateComponent.CtComponent(id);
+                                                CarCreate.AttachComponentToCar(ref car, ref component, out string message);
+                                                Console.WriteLine(message);
+                                            }
+                                            else goto start;
+                                        }
+                                        else
+                                        {
                                             Part component = CreateComponent.CtComponent(id);
                                             CarCreate.AttachComponentToCar(ref car, ref component, out string message);
                                             Console.WriteLine(message);
                                         }
-                                        else goto start;
                                     }
-                                    else
-                                    {
-                                        Part component = CreateComponent.CtComponent(id);
-                                        CarCreate.AttachComponentToCar(ref car, ref component, out string message);
-                                        Console.WriteLine(message);
-                                    }
-
+                                    else Console.WriteLine("Проверьте корректность ввода");
 
                                     Console.WriteLine("Вернуться в меню - enter");
                                     if (Console.ReadKey().Key == ConsoleKey.Enter)
@@ -213,23 +227,30 @@ namespace TehObsluzMashin
                             case 5:
                                 {
                                     Car car = SearchCar(ref proj);
-                                    Console.WriteLine("1 - Активной 2 - Неактивной");
-                                    int.TryParse(Console.ReadLine(), out int v);
-                                    switch (v)
+                                    if (car != null)
                                     {
-                                        case 1:
+                                        Console.WriteLine("1 - Активной 2 - Неактивной");
+
+
+                                        int.TryParse(Console.ReadLine(), out int v);
+                                        switch (v)
+                                        {
+                                            case 1:
                                             {
                                                 CarCreate.GetCarActiveOrNot(ref car, true);
                                                 Console.WriteLine("Машина активна");
                                                 break;
                                             }
-                                        case 2:
+                                            case 2:
                                             {
                                                 CarCreate.GetCarActiveOrNot(ref car, false);
                                                 Console.WriteLine("Машина неактивна");
                                                 break;
                                             }
+                                        }
                                     }
+                                    else Console.WriteLine("Проверьте корректность ввода");
+
                                     Console.WriteLine("Вернуться в меню - enter");
                                     if (Console.ReadKey().Key == ConsoleKey.Enter)
                                         goto start;
@@ -317,12 +338,16 @@ namespace TehObsluzMashin
                             case 2:
                                 {
                                     Car car = SearchCarForStop(ref proj);
-                                    if (createProject.IsBroken(ref car))
-                                        Console.WriteLine("Машина уже не в рабочем состоянии");
-                                    else
+                                    if (car != null)
                                     {
-                                        createProject.CreateBreaks(ref car, ref proj, ref user);
+                                        if (createProject.IsBroken(ref car))
+                                            Console.WriteLine("Машина уже не в рабочем состоянии");
+                                        else
+                                        {
+                                            createProject.CreateBreaks(ref car, ref proj, ref user);
+                                        }
                                     }
+                                    else Console.WriteLine("Проверьте корректность ввода");
 
                                     Console.WriteLine("Вернуться в меню - enter");
                                     if (Console.ReadKey().Key == ConsoleKey.Enter)
@@ -396,7 +421,9 @@ namespace TehObsluzMashin
                                         Console.WriteLine("Машина уже не в рабочем состоянии");
                                     else
                                     {
-                                        createProject.CreateBreaks(ref car, ref project);
+                                        if (car != null)
+                                            createProject.CreateBreaks(ref car, ref project);
+                                        else Console.WriteLine("Проверьте корректность ввода");
                                     }
 
                                     Console.WriteLine("Вернуться в меню - enter");
@@ -409,29 +436,31 @@ namespace TehObsluzMashin
                             case 4:
                                 {
                                     Car car = SearchCar(ref createProject);
-
-                                    if (CarCreate.IsComponentInThatCar(ref car, out int id))
+                                    if (car != null)
                                     {
-                                        Console.WriteLine("Компонент уже есть в данной машине");
-                                        Console.WriteLine("Создать новый компонент 1 - да Любая клавиша - выход в меню");
-                                        int.TryParse(Console.ReadLine(), out int ch);
-                                        if (ch == 1)
+                                        if (CarCreate.IsComponentInThatCar(ref car, out int id))
                                         {
-                                            Console.WriteLine("Введите id компонента");
-                                            int.TryParse(Console.ReadLine(), out id);
+                                            Console.WriteLine("Компонент уже есть в данной машине");
+                                            Console.WriteLine("Создать новый компонент 1 - да Любая клавиша - выход в меню");
+                                            int.TryParse(Console.ReadLine(), out int ch);
+                                            if (ch == 1)
+                                            {
+                                                Console.WriteLine("Введите id компонента");
+                                                int.TryParse(Console.ReadLine(), out id);
+                                                Part component = CreateComponent.CtComponent(id);
+                                                CarCreate.AttachComponentToCar(ref car, ref component, out string message);
+                                                Console.WriteLine(message);
+                                            }
+                                            else goto start;
+                                        }
+                                        else
+                                        {
                                             Part component = CreateComponent.CtComponent(id);
                                             CarCreate.AttachComponentToCar(ref car, ref component, out string message);
                                             Console.WriteLine(message);
                                         }
-                                        else goto start;
                                     }
-                                    else
-                                    {
-                                        Part component = CreateComponent.CtComponent(id);
-                                        CarCreate.AttachComponentToCar(ref car, ref component, out string message);
-                                        Console.WriteLine(message);
-                                    }
-
+                                    else Console.WriteLine("Проверьте корректность ввода");
 
                                     Console.WriteLine("Вернуться в меню - enter");
                                     if (Console.ReadKey().Key == ConsoleKey.Enter)
@@ -441,23 +470,30 @@ namespace TehObsluzMashin
                             case 5:
                                 {
                                     Car car = SearchCar(ref createProject);
-                                    Console.WriteLine("1 - Активной 2 - Неактивной");
-                                    int.TryParse(Console.ReadLine(), out int v);
-                                    switch (v)
+                                    if (car != null)
                                     {
-                                        case 1:
-                                            {
-                                                CarCreate.GetCarActiveOrNot(ref car, true);
-                                                Console.WriteLine("Машина активна");
-                                                break;
-                                            }
-                                        case 2:
-                                            {
-                                                CarCreate.GetCarActiveOrNot(ref car, false);
-                                                Console.WriteLine("Машина неактивна");
-                                                break;
-                                            }
+                                        Console.WriteLine("1 - Активной 2 - Неактивной");
+                                        int.TryParse(Console.ReadLine(), out int v);
+
+
+                                        switch (v)
+                                        {
+                                            case 1:
+                                                {
+                                                    CarCreate.GetCarActiveOrNot(ref car, true);
+                                                    Console.WriteLine("Машина активна");
+                                                    break;
+                                                }
+                                            case 2:
+                                                {
+                                                    CarCreate.GetCarActiveOrNot(ref car, false);
+                                                    Console.WriteLine("Машина неактивна");
+                                                    break;
+                                                }
+                                        }
                                     }
+                                    else Console.WriteLine("Проверьте корректность ввода");
+
                                     Console.WriteLine("Вернуться в меню - enter");
                                     if (Console.ReadKey().Key == ConsoleKey.Enter)
                                         goto start;
@@ -619,7 +655,7 @@ namespace TehObsluzMashin
                                         Console.WriteLine("Введите пароль");
                                         string password = Console.ReadLine();
                                         CreateUser.CUser(ref project, login, password);
-                                        Console.WriteLine("Пользователь успешно создан");
+
                                     }
 
                                     Console.WriteLine("Вернуться в меню - enter");
@@ -656,12 +692,16 @@ namespace TehObsluzMashin
                             case 2:
                                 {
                                     Car car = SearchCar(ref createProject, out Project project);
-                                    if (createProject.IsBroken(ref car))
-                                        Console.WriteLine("Машина уже не в рабочем состоянии");
-                                    else
+                                    if (car != null)
                                     {
-                                        createProject.CreateBreaks(ref car, ref project);
+                                        if (createProject.IsBroken(ref car))
+                                            Console.WriteLine("Машина уже не в рабочем состоянии");
+                                        else
+                                        {
+                                            createProject.CreateBreaks(ref car, ref project);
+                                        }
                                     }
+                                    else Console.WriteLine("Проверьте корректность ввода");
 
                                     Console.WriteLine("Вернуться в меню - enter");
                                     if (Console.ReadKey().Key == ConsoleKey.Enter)

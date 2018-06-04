@@ -16,4 +16,8 @@
     <Login>Nastya</Login>
     <Password>Admin</Password>
   </Admin>
+  <Admin>
+    <Login>Loli</Login>
+    <Password>Nastenka07</Password>
+  </Admin>
 </ArrayOfAdmin>
