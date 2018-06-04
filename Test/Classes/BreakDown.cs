@@ -18,7 +18,7 @@ namespace Test.Classes
             Console.WriteLine($"Дата создания : {DateOfIssue}\n" +
                               $"Описание поломки : {DescriptionOfBreakDown}\n" +
                               $"Рекомендации по починке : {RecommendationsForRepeiring}\n" +
-                              $"Проект : {Project.Name}" +
+                              $"Проект : {Project.Name}\n" +
                               $"Пользователь, который проводил осмотр : {User.Login}\n");  
         }
     }

@@ -55,7 +55,7 @@
         <Name>willis</Name>
         <TypeOfCar>Mehanic</TypeOfCar>
         <GarageNuber>W258YDL</GarageNuber>
-        <Active>true</Active>
+        <Active>false</Active>
         <Components>
           <Part>
             <Name>daniel</Name>

@@ -19,6 +19,9 @@ namespace TehObsluzMashin.DAL
     [Serializable]
     public class CreateProject
     {
+        public delegate void ProjectStateHandler(string message);
+        ProjectStateHandler _del;
+       
         public List<Project> Projects;
         public List<Admin> Admins;
         public CarCreate carCreate = new CarCreate();
@@ -32,6 +35,10 @@ namespace TehObsluzMashin.DAL
         private Random Rnd = new Random();
 
 
+        public void RegisterHandler(ProjectStateHandler del)
+        {
+            _del = del;
+        }
         public void GenerateProjects()
         {
             Projects = new List<Project>();
@@ -55,13 +62,11 @@ namespace TehObsluzMashin.DAL
         }
         public void LoadFromFile(FileInfo projectsFile)
         {
-
             using (FileStream fs = new FileStream(projectsFile.FullName, FileMode.OpenOrCreate))
             {
                 Projects = (List<Project>)formatter.Deserialize(fs);
             }
         }
-
         public void LoasAdminsFromFile(FileInfo adminPath)
         {
             using (FileStream fs = new FileStream(adminPath.FullName, FileMode.Open))
@@ -145,6 +150,7 @@ namespace TehObsluzMashin.DAL
                     pro.PrintProject();
                 }
             }
+            else _del("Список пуст");
         }
         public void ShowAllCarsInProject(ref Project project)
         {
@@ -155,6 +161,7 @@ namespace TehObsluzMashin.DAL
                     item.PrintInfo();
                 }
             }
+            else _del("Список пуст");
         }
         public Project SearchProject(ref List<Project> projects, string name)
         {
@@ -213,74 +220,56 @@ namespace TehObsluzMashin.DAL
         }
         public void CreateBreaks(ref Car car, ref Project project)
         {
-            Console.WriteLine("Введите описание поломки");
-            string description = Console.ReadLine();
-            Console.WriteLine("Введите рекомендации по починке");
-            string recommends = Console.ReadLine();
-            user:
-            Console.WriteLine("Введите логин пользователя, который проводил осмотр ");
-            string login = Console.ReadLine();
-            User user = new User();
-            if (project.Users != null)
-            {
-                bool isUser = false;
-                foreach (User us in project.Users)
-                {
-                    if (us.Login == login)
-                    {
-                        user = us;
-                        isUser = true;
-                    }
-                }
-
-                if (isUser == false)
-                {
-                    Console.WriteLine("Такого пользователя не существует в этом проекте");
-                    goto user;
-                }
-            }
+            
             if (Breaks != null)
             {
 
                 BreakDown brekd = new BreakDown();
-                brekd = CreateBreak.Create(ref car, description, recommends, ref user, ref project);
-                car.Active = false;
-                Breaks.Add(brekd);
-                Console.WriteLine("Машина остановлена");
+                brekd = CreateBreak.Create(ref car, ref project);
+                if (brekd != null)
+                {
+                    car.Active = false;
+                    Breaks.Add(brekd);
+                    _del("Машина остановлена");
+                }
             }
             else
             {
                 Breaks = new List<BreakDown>();
                 BreakDown brekd = new BreakDown();
-                brekd = CreateBreak.Create(ref car, description, recommends, ref user, ref project);
-                car.Active = false;
-                Breaks.Add(brekd);
-                Console.WriteLine("Машина остановлена");
+                brekd = CreateBreak.Create(ref car, ref project);
+                if (brekd != null)
+                {
+                    car.Active = false;
+                    Breaks.Add(brekd);
+                    _del("Машина остановлена");
+                }
             }
         }
         public void CreateBreaks(ref Car car, ref Project project, ref User user)
         {
-            Console.WriteLine("Введите описание поломки");
-            string description = Console.ReadLine();
-            Console.WriteLine("Введите рекомендации по починке");
-            string recommends = Console.ReadLine();
-
             if (Breaks != null)
             {
                 BreakDown brekd = new BreakDown();
-                brekd = CreateBreak.Create(ref car, description, recommends, ref user, ref project);
-                car.Active = false;
-                Breaks.Add(brekd);
-                Console.WriteLine("Машина остановлена");
+                brekd = CreateBreak.Create(ref car, ref project, ref user);
+                if (brekd != null)
+                {
+                    car.Active = false;
+                    Breaks.Add(brekd);
+                    _del("Машина остановлена");
+                }
             }
             else
             {
                 Breaks = new List<BreakDown>();
                 BreakDown brekd = new BreakDown();
-                brekd = CreateBreak.Create(ref car, description, recommends, ref user, ref project);
-                car.Active = false;
-                Breaks.Add(brekd);
-                Console.WriteLine("Машина остановлена");
+                brekd = CreateBreak.Create(ref car, ref project, ref user);
+                if (brekd != null)
+                {
+                    car.Active = false;
+                    Breaks.Add(brekd);
+                    _del("Машина остановлена");
+                }
             }
         }
         public void ShowAllBreaks()
@@ -303,7 +292,7 @@ namespace TehObsluzMashin.DAL
                         item.PrintBreakDown();
                 }
             }
-            else Console.WriteLine("Список пуст");
+            else _del("Список пуст");
         }
     }
 

@@ -19,7 +19,7 @@ using Test.Classes;
 namespace TehObsluzMashin
 {
     class Program
-    {
+    {  
         static DirectoryInfo path = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory).Parent?.Parent?.Parent;
         static FileInfo adminPath = new FileInfo(path.FullName + "/TehObsluzMashin.DAL/Data/Admins.xml");
         static FileInfo projectPath = new FileInfo(path.FullName + "/TehObsluzMashin.DAL/Data/Projects.xml");
@@ -29,6 +29,7 @@ namespace TehObsluzMashin
             try
             {
                 CreateProject createProject = new CreateProject();
+                createProject.RegisterHandler(Show_Message);
                 createProject.LoadFromFile(projectPath);
                 createProject.LoadBreakDownsFromFile(breaksPath);
                 createProject.LoasAdminsFromFile(adminPath);
@@ -37,7 +38,7 @@ namespace TehObsluzMashin
                 User user = null;
                 Project proj = null;
                 Console.WriteLine("1 - Администратор\n2 - Пользователь\n3 - Зарегистрироваться");
-                int.TryParse(Console.ReadLine(), out int IsAdmin);
+                Int32.TryParse(Console.ReadLine(), out int IsAdmin);
                 switch (IsAdmin)
                 {
                     case 1:
@@ -77,7 +78,7 @@ namespace TehObsluzMashin
                         if (user != null)
                         {
                             Console.WriteLine("Добро пожаловать");
-                            Thread.Sleep(3000);
+                            Thread.Sleep(1000);
                             Console.Clear();
                             UserMenu(proj, user, createProject);
 
@@ -127,13 +128,16 @@ namespace TehObsluzMashin
 
             Console.ReadLine();
         }
-
+        private static void Show_Message(String message)
+        {
+            Console.WriteLine(message);
+        }
         static void UserMenu(Project proj, User user, CreateProject createProject)
         {
             start:
             Console.Clear();
             Console.WriteLine("1 - Машина\n2 - Компонент\n3 - Останов");
-            int.TryParse(Console.ReadLine(), out int userChoice);
+            Int32.TryParse(Console.ReadLine(), out int userChoice);
             switch (userChoice)
             {
                 case 1:
@@ -147,7 +151,7 @@ namespace TehObsluzMashin
                                           "5 - Сделать машину активной/неактивной\n" +
                                           "6 - Создать машину");
                         Console.WriteLine("Вернуться в меню - enter x2");
-                        int.TryParse(Console.ReadLine(), out int choice);
+                        Int32.TryParse(Console.ReadLine(), out int choice);
                         switch (choice)
                         {
                             case 1:
@@ -199,11 +203,11 @@ namespace TehObsluzMashin
                                         {
                                             Console.WriteLine("Компонент уже есть в данной машине");
                                             Console.WriteLine("Создать новый компонент 1 - да Любая клавиша - выход в меню");
-                                            int.TryParse(Console.ReadLine(), out int ch);
+                                            Int32.TryParse(Console.ReadLine(), out int ch);
                                             if (ch == 1)
                                             {
                                                 Console.WriteLine("Введите id компонента");
-                                                int.TryParse(Console.ReadLine(), out id);
+                                                Int32.TryParse(Console.ReadLine(), out id);
                                                 Part component = CreateComponent.CtComponent(id);
                                                 CarCreate.AttachComponentToCar(ref car, ref component, out string message);
                                                 Console.WriteLine(message);
@@ -232,7 +236,7 @@ namespace TehObsluzMashin
                                         Console.WriteLine("1 - Активной 2 - Неактивной");
 
 
-                                        int.TryParse(Console.ReadLine(), out int v);
+                                        Int32.TryParse(Console.ReadLine(), out int v);
                                         switch (v)
                                         {
                                             case 1:
@@ -280,7 +284,7 @@ namespace TehObsluzMashin
                                           "2 - Создать компонент и прикрепить его к машине\n" +
                                           "Вернуться в меню - enter x2");
 
-                        int.TryParse(Console.ReadLine(), out int c);
+                        Int32.TryParse(Console.ReadLine(), out int c);
                         switch (c)
                         {
                             case 1:
@@ -292,7 +296,7 @@ namespace TehObsluzMashin
                             case 2:
                                 {
                                     Console.WriteLine("Введите id компонента");
-                                    int.TryParse(Console.ReadLine(), out int idco);
+                                    Int32.TryParse(Console.ReadLine(), out int idco);
                                     Part part = CreateComponent.CtComponent(idco);
                                     Car car = SearchCar(ref proj);
                                     if (car != null)
@@ -322,7 +326,7 @@ namespace TehObsluzMashin
                         Console.WriteLine("1 - Отобразить весь список остановов на проекте\n" +
                                           "2 - Создать останов для доступной машины\n" +
                                           "Вернуться в меню - enter x2");
-                        int.TryParse(Console.ReadLine(), out int cl);
+                        Int32.TryParse(Console.ReadLine(), out int cl);
                         switch (cl)
                         {
                             case 1:
@@ -378,7 +382,7 @@ namespace TehObsluzMashin
             Console.WriteLine("------------------------Контроль технического обслуживания машин-------------------------");
             Console.WriteLine("1 - Машина\n2 - Компонент\n3 - Проект\n4 - Останов\n5 - Пользователь");
             int cho = 0;
-            int.TryParse(Console.ReadLine(), out cho);
+            Int32.TryParse(Console.ReadLine(), out cho);
             switch (cho)
             {
                 case 1:
@@ -392,7 +396,7 @@ namespace TehObsluzMashin
                                           "5 - Сделать машину активной/неактивной\n" +
                                           "6 - Создать машину");
                         Console.WriteLine("Вернуться в меню - enter x2");
-                        int.TryParse(Console.ReadLine(), out int choice);
+                        Int32.TryParse(Console.ReadLine(), out int choice);
                         switch (choice)
                         {
                             case 1:
@@ -442,11 +446,11 @@ namespace TehObsluzMashin
                                         {
                                             Console.WriteLine("Компонент уже есть в данной машине");
                                             Console.WriteLine("Создать новый компонент 1 - да Любая клавиша - выход в меню");
-                                            int.TryParse(Console.ReadLine(), out int ch);
+                                            Int32.TryParse(Console.ReadLine(), out int ch);
                                             if (ch == 1)
                                             {
                                                 Console.WriteLine("Введите id компонента");
-                                                int.TryParse(Console.ReadLine(), out id);
+                                                Int32.TryParse(Console.ReadLine(), out id);
                                                 Part component = CreateComponent.CtComponent(id);
                                                 CarCreate.AttachComponentToCar(ref car, ref component, out string message);
                                                 Console.WriteLine(message);
@@ -473,7 +477,7 @@ namespace TehObsluzMashin
                                     if (car != null)
                                     {
                                         Console.WriteLine("1 - Активной 2 - Неактивной");
-                                        int.TryParse(Console.ReadLine(), out int v);
+                                        Int32.TryParse(Console.ReadLine(), out int v);
 
 
                                         switch (v)
@@ -533,7 +537,7 @@ namespace TehObsluzMashin
                                           "2 - Создать компонент и прикрепить его к машине\n" +
                                           "Вернуться в меню - enter x2");
 
-                        int.TryParse(Console.ReadLine(), out int c);
+                        Int32.TryParse(Console.ReadLine(), out int c);
                         switch (c)
                         {
                             case 1:
@@ -554,7 +558,7 @@ namespace TehObsluzMashin
                             case 2:
                                 {
                                     Console.WriteLine("Введите id компонента");
-                                    int.TryParse(Console.ReadLine(), out int idco);
+                                    Int32.TryParse(Console.ReadLine(), out int idco);
                                     Part part = CreateComponent.CtComponent(idco);
                                     Car car = SearchCar(ref createProject);
                                     if (car != null)
@@ -584,7 +588,7 @@ namespace TehObsluzMashin
                         Console.WriteLine("1 - Отобразить весь список проектов\n" +
                                           "2 - Создать проект\n" +
                                           "Вернуться в меню - enter x2");
-                        int.TryParse(Console.ReadLine(), out int b);
+                        Int32.TryParse(Console.ReadLine(), out int b);
                         switch (b)
                         {
                             case 1:
@@ -616,7 +620,7 @@ namespace TehObsluzMashin
                         Console.WriteLine("1 - Отобразить весь список пользователей по проектам\n" +
                                           "2 - Создать пользователя\n" +
                                           "Вернуться в меню - enter x2 ");
-                        int.TryParse(Console.ReadLine(), out int us);
+                        Int32.TryParse(Console.ReadLine(), out int us);
                         switch (us)
                         {
                             case 1:
@@ -676,7 +680,7 @@ namespace TehObsluzMashin
                         Console.WriteLine("1 - Отобразить весь список остановов\n" +
                                           "2 - Создать останов для доступной машины\n" +
                                           "Вернуться в меню - enter x2");
-                        int.TryParse(Console.ReadLine(), out int cl);
+                        Int32.TryParse(Console.ReadLine(), out int cl);
                         switch (cl)
                         {
                             case 1:
